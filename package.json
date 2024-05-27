@@ -1,0 +1,23 @@
+{
+  "name": "backend-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "nodemon ./src/server/server.js",
+    "start": "node ./src/server/server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google-cloud/firestore": "^7.7.0",
+    "@hapi/hapi": "^21.3.9",
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.5",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.1"
+  }
+}
