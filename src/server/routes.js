@@ -1,5 +1,6 @@
 const { register, login, updateUser, deleteUser, getUser } = require("../server/userHandler");
 const { verifyToken } = require("../middleware/authentikasi");
+const { getFruit } = require("../server/fruitHandler");
 
 const routes = [
   {
@@ -35,6 +36,12 @@ const routes = [
     options: {
       pre: [{ method: verifyToken }],
     },
+  },
+
+  {
+    method: "GET",
+    path: "/fruit/{name}",
+    handler: getFruit,
   },
 ];
 
