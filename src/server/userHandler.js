@@ -27,17 +27,17 @@ const register = async (request, h) => {
     const userRef = await createUser(userData);
 
     // Get the documentId
-    const Id = userRef.id;
+    const id = userRef.id;
 
     // Update the user document with the documentId
-    await userRef.update({ Id });
+    await userRef.update({ id });
 
     return h
       .response({
         status: "success",
         message: "User registered successfully",
         user: {
-          Id,
+          id,
           email,
           name,
         },
@@ -94,7 +94,7 @@ const login = async (request, h) => {
         status: "success",
         message: "Login successful",
         user: {
-          Id: userDoc.id,
+          id: userDoc.id,
           email: user.email,
           name: user.name,
           token,
@@ -123,8 +123,8 @@ const updateUser = async (request, h) => {
 
     // enkripsi password baru
     let hashedPassword = undefined;
-    if (password) {
-      hashedPassword = await bcrypt.hash(password, 10);
+    if (updatedData.password) {
+      hashedPassword = await bcrypt.hash(updatedData.password, 10);
     }
 
     if (updatedData.email && updatedData.email !== request.user.email) {
