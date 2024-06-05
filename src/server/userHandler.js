@@ -86,7 +86,8 @@ const login = async (request, h) => {
     }
 
     // Generate JWT Token
-    const token = jwt.sign({ email }, JWT_SECRET, { expiresIn: "12h" });
+    const token = jwt.sign({id: user.id}, JWT_SECRET, { expiresIn: "12h" });
+    // const token = jwt.sign({email}, JWT_SECRET, { expiresIn: "12h" });
     await userDoc.ref.update({ token });
 
     return h
@@ -115,7 +116,7 @@ const login = async (request, h) => {
 //Update User
 const updateUser = async (request, h) => {
   const userId = request.params.id;
-  // const { email, password } = request.payload;
+  const { name, email, password } = request.payload;
 
   try {
     const updatedData = request.payload;
@@ -128,7 +129,8 @@ const updateUser = async (request, h) => {
     }
 
     if (updatedData.email && updatedData.email !== request.user.email) {
-      token = jwt.sign({ email: updatedData.email }, JWT_SECRET, { expiresIn: "12h" });
+      token = jwt.sign({id: userId}, JWT_SECRET, { expiresIn: "12h" });
+      // token = jwt.sign({ email: updatedData.email }, JWT_SECRET, { expiresIn: "12h" });
       updatedData.token = token;
     }
 
@@ -197,7 +199,7 @@ const getUser = async (request, h) => {
     }
 
     const user = userSnapshot.data();
-    // delete user.password;
+    delete user.password;
 
     return h
       .response({

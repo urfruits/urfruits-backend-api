@@ -29,6 +29,10 @@ const updateUserById = async (id, user) => {
     updateData.password = user.password;
   }
 
+  if (user.name !== undefined) {
+    updateData.name = user.name;
+  }
+
   return await userDoc.update(updateData);
 };
 
