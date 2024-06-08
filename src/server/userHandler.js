@@ -86,7 +86,7 @@ const login = async (request, h) => {
     }
 
     // Generate JWT Token
-    const token = jwt.sign({id: user.id}, JWT_SECRET, { expiresIn: "12h" });
+    const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: "12h" });
     // const token = jwt.sign({email}, JWT_SECRET, { expiresIn: "12h" });
     await userDoc.ref.update({ token });
 
@@ -120,7 +120,7 @@ const updateUser = async (request, h) => {
 
   try {
     const updatedData = request.payload;
-    let token;
+    // let token;
 
     // enkripsi password baru
     let hashedPassword = undefined;
@@ -128,11 +128,11 @@ const updateUser = async (request, h) => {
       hashedPassword = await bcrypt.hash(updatedData.password, 10);
     }
 
-    if (updatedData.email && updatedData.email !== request.user.email) {
-      token = jwt.sign({id: userId}, JWT_SECRET, { expiresIn: "12h" });
-      // token = jwt.sign({ email: updatedData.email }, JWT_SECRET, { expiresIn: "12h" });
-      updatedData.token = token;
-    }
+    // if (updatedData.email && updatedData.email !== request.user.email) {
+    //   token = jwt.sign({id: userId}, JWT_SECRET, { expiresIn: "12h" });
+    //   // token = jwt.sign({ email: updatedData.email }, JWT_SECRET, { expiresIn: "12h" });
+    //   updatedData.token = token;
+    // }
 
     //update user
     await updateUserById(userId, updatedData);
@@ -141,9 +141,9 @@ const updateUser = async (request, h) => {
       status: "success",
       message: "User updated successfully",
     };
-    if (token) {
-      responseData.token = token; // Include the new token in the response if email was updated
-    }
+    // if (token) {
+    //   responseData.token = token; // Include the new token in the response if email was updated
+    // }
 
     return h.response(responseData).code(200);
   } catch (error) {
