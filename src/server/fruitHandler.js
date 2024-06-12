@@ -1,7 +1,8 @@
 const Firestore = require("@google-cloud/firestore");
 const crypto = require("crypto");
 const storeData = require("../services/storeData");
-const loadData = require("../services/loadData")
+const loadData = require("../services/loadData");
+const predictClassification = require("../services/inferenceModel");
 
 const db = new Firestore({
   databaseId: "urfruit",
@@ -9,16 +10,19 @@ const db = new Firestore({
 
 const getFruit = async (request, h) => {
   // Ambil parameter 'name' dari URL
-  const fruitName = request.params.name.toLowerCase();
+  const { image } = request.payload;
+  const { model } = request.server.app;
 
   try {
+    const { fruitName, confidenceScore } = await predictClassification(model, image);
+
     const fruitDoc = await db.collection("fruit").doc(fruitName).get();
     // Cek nama buah
     if (fruitDoc.exists) {
       const fruitData = fruitDoc.data();
       const id = crypto.randomUUID();
       const createdAt = new Date().toISOString();
-    
+
       await storeData(id, createdAt, fruitData);
 
       return h
@@ -28,6 +32,7 @@ const getFruit = async (request, h) => {
           data: {
             id,
             createdAt,
+            confidenceScore,
             ...fruitData,
           },
         })
