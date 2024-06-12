@@ -39,8 +39,8 @@ const routes = [
   },
 
   {
-    method: "GET",
-    path: "/fruit/{name}",
+    method: "POST",
+    path: "/fruit",
     handler: getFruit,
   },
   {
