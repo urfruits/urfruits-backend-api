@@ -42,6 +42,12 @@ const routes = [
     method: "POST",
     path: "/fruit",
     handler: getFruit,
+    options: {
+      payload: {
+        allow: "multipart/form-data",
+        multipart: true,
+      },
+    },
   },
   {
     path: "/history",
