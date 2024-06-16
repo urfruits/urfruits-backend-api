@@ -13,7 +13,7 @@ const loadModel = require("../services/loadModel");
         origin: ["*"],
       },
       payload: {
-        maxBytes: 1000000,
+        maxBytes: 10000000,
       },
     },
   });

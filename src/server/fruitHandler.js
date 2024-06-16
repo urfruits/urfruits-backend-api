@@ -8,13 +8,14 @@ const db = new Firestore({
   databaseId: "urfruit",
 });
 
-const getFruit = async (request, h) => {
+//Fungsi Handler untuk hasil prediksi ML Buah
+const getPredictFruit = async (request, h) => {
   // Ambil parameter 'name' dari URL
   const { image } = request.payload;
   const { model } = request.server.app;
 
   try {
-    const { fruitName, confidenceScore } = await predictClassification(model, image);
+    const { fruitName, formattedConfidenceScore } = await predictClassification(model, image);
 
     const fruitDoc = await db.collection("fruit").doc(fruitName).get();
     // Cek nama buah
@@ -23,7 +24,7 @@ const getFruit = async (request, h) => {
       const id = crypto.randomUUID();
       const createdAt = new Date().toISOString();
 
-      await storeData(id, createdAt, fruitData);
+      await storeData(id, createdAt, fruitData, formattedConfidenceScore);
 
       return h
         .response({
@@ -32,7 +33,7 @@ const getFruit = async (request, h) => {
           data: {
             id,
             createdAt,
-            confidenceScore,
+            confidenceScore: formattedConfidenceScore,
             ...fruitData,
           },
         })
@@ -56,6 +57,52 @@ const getFruit = async (request, h) => {
   }
 };
 
+//Fungsi Handler untuk mengambil data buah 
+const getFruit = async (request, h) => {
+  // Ambil parameter 'name' dari URL
+  const fruitName = request.params.name.toLowerCase();
+
+  try {
+    const fruitDoc = await db.collection("fruit").doc(fruitName).get();
+    // Cek nama buah
+    if (fruitDoc.exists) {
+      const fruitData = fruitDoc.data();
+      const id = crypto.randomUUID();
+      const createdAt = new Date().toISOString();
+    
+      await storeData(id, createdAt, fruitData);
+
+      return h
+        .response({
+          status: "success",
+          message: "Fruit found",
+          data: {
+            id,
+            createdAt,
+            ...fruitData,
+          },
+        })
+        .code(200);
+    } else {
+      return h
+        .response({
+          status: "fail",
+          message: "Fruit not found",
+        })
+        .code(404);
+    }
+  } catch (error) {
+    console.error("Error getting document:", error);
+    return h
+      .response({
+        status: "error",
+        message: "Internal Server Error",
+      })
+      .code(500);
+  }
+};
+
+//Fungsi Handler untuk mengambil history
 async function getHistory(request, h) {
   const allData = await loadData();
   const response = h.response({
@@ -65,4 +112,4 @@ async function getHistory(request, h) {
   response.code(200);
   return response;
 }
-module.exports = { getFruit, getHistory };
+module.exports = { getFruit, getPredictFruit, getHistory };

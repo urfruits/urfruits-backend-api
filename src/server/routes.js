@@ -1,6 +1,6 @@
 const { register, login, updateUser, deleteUser, getUser } = require("../server/userHandler");
 const { verifyToken } = require("../middleware/authentikasi");
-const { getFruit, getHistory } = require("../server/fruitHandler");
+const { getFruit, getPredictFruit, getHistory } = require("../server/fruitHandler");
 
 const routes = [
   {
@@ -37,11 +37,15 @@ const routes = [
       pre: [{ method: verifyToken }],
     },
   },
-
+  {
+    method: "GET",
+    path: "/fruit/{name}",
+    handler: getFruit,
+  },
   {
     method: "POST",
     path: "/fruit",
-    handler: getFruit,
+    handler: getPredictFruit,
     options: {
       payload: {
         allow: "multipart/form-data",
@@ -49,6 +53,7 @@ const routes = [
       },
     },
   },
+
   {
     path: "/history",
     method: "GET",
