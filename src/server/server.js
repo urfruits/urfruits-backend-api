@@ -2,6 +2,7 @@ require("dotenv").config();
 
 const Hapi = require("@hapi/hapi");
 const routes = require("../server/routes");
+const loadModel = require("../services/loadModel");
 
 (async () => {
   const server = Hapi.server({
@@ -12,10 +13,13 @@ const routes = require("../server/routes");
         origin: ["*"],
       },
       payload: {
-        maxBytes: 1000000,
+        maxBytes: 10000000,
       },
     },
   });
+
+  const model = await loadModel();
+  server.app.model = model;
 
   server.route(routes);
 

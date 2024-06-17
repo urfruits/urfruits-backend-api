@@ -1,6 +1,6 @@
 const { Firestore } = require("@google-cloud/firestore");
 
-async function storeData(id, createdAt, data) {
+async function storeData(id, createdAt, data, formattedConfidenceScore) {
   const db = new Firestore({
     databaseId: "urfruit",
   });
@@ -9,6 +9,7 @@ async function storeData(id, createdAt, data) {
   const docData = {
     id: id,
     createdAt: createdAt,
+    ...(formattedConfidenceScore !== undefined ? { confidenceScore: formattedConfidenceScore } : {confidenceScore: null}),
     ...data,
   };
 
