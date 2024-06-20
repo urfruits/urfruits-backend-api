@@ -47,13 +47,13 @@ For more information, you can visit our **Postman API Documentation** on : [API 
 If you have any questions, feedback, or suggestions related to the cloud computing branch, feel free to reach out to us at :
 
 - Hernanda Dzaki Permana c006d4ky0232@bangkit.academy
-- Santiago Slyvantoni c006d4ky0281@bangkit.academy 
+- Santiago Sylvantoni c006d4ky0281@bangkit.academy 
 
 ## Acknowledgements
 
 We also extend our heartfelt gratitude to the following individuals for their invaluable contributions to the success of our cloud computing project
 
 - Hernanda Dzaki Permana (Core CC Team)
-- Santiago Slyvantoni (Core CC Team)
+- Santiago Sylvantoni (Core CC Team)
 - Capstone Project Group C241-PS415
 - Bangkit Mentor
